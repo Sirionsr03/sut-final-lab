@@ -8,23 +8,25 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func Products(t *testing.T) {
+func TestPrice(t *testing.T) {
 
 	g := NewGomegaWithT(t)
 
-	t.Run(`Name correct`, func(t *testing.T) {
+	t.Run(`Price is invalid`, func(t *testing.T) {
 		product := entity.Products{
-			Name:  "", //ผิดตรงนี้
-			Price: 120.0,
+			Name:  "Siron",
+			Price: 100002, //ผิดตรงนี้
 			SKU:   "Test",
 		}
 
 		ok, err := govalidator.ValidateStruct(product)
 
+		print("error", err)
+
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(`Name is required`))
+		g.Expect(err.Error()).To(Equal(`Price must be between 1 and 1000`))
 
 	})
 }
